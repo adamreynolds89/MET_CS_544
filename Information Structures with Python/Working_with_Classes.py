@@ -5,7 +5,7 @@ class Pet:
 
     # Create two variables kind and color; assign values
     KIND = 'frog'
-    COLOR = 'golden rust'
+    COLOR = 'chocolate'
 
     def __init__(self, name):
         #  the constructor, initialize the pets name
@@ -17,13 +17,12 @@ class Pet:
         elif Pet.KIND == 'feline':
             return self.name + ' says Purr.'
         else:
-            return NotImplementedError
+            return ''
 
     def jump(self):
         pass
 
     def do_tricks(self):
-
         # Call the speak method and the jump method
         self.speak()
         # Call the jump method
@@ -34,14 +33,12 @@ class Pet:
 
 class Jumper:
     # This is a mixin class for jump
-
     def jump(self):
             # Create jump method that prints that a Pet is jumping and the pets name
             return self.name + ' is jumping.'
 
 
 class Dog(Jumper, Pet):  # You will need to inherit for this to work
-
     # Change kind to canine
     KIND = 'canine'
 
@@ -54,13 +51,12 @@ class Dog(Jumper, Pet):  # You will need to inherit for this to work
         # Rollover action prints the name of the dog and that it is rolling over
         if action == 'rollover':
             return self.name + ' is rolling over.'
+        # Owner action returns the name of the owner
         elif action == 'owner':
             return 'Adam is my owner.'
-        # Owner action returns the name of the owner
 
 
 class BigDog(Dog):  # You will need to inherit for this to work
-
     # Change the color to tan
     COLOR = 'tan'
 
@@ -70,11 +66,10 @@ class BigDog(Dog):  # You will need to inherit for this to work
 
     def speak(self):
         # Print dogs name and what it says
-        return self.name + ' says WOOF!'
+        return self.name + ' says WOOF!!!'
 
 
 class SmallDog(Dog):  # You will need to inherit for this to work
-
     # Change the color to brindle
     COLOR = 'brindle'
 
@@ -87,7 +82,7 @@ class SmallDog(Dog):  # You will need to inherit for this to work
 
     def speak(self):
         # Print dogs name and what it says
-        return self.name + ' says yap.'
+        return self.name + ' says Yip.'
 
 
 class Cat(Jumper, Pet):  # You will need to inherit for this to work
@@ -97,11 +92,11 @@ class Cat(Jumper, Pet):  # You will need to inherit for this to work
 
     def __str__(self):
         # Print the name and description of cat
-        return '\n' + 'I am a ' + Cat.KIND + ' named ' + self.name + '.'
+        return '\n' + 'I am a cat named ' + self.name + '.'
 
     def speak(self):
         # Print cats name and what it says
-        return self.name + ' says purr.'
+        return self.name + ' says Meow!!!'
 
     def climb(self):
         # Prints the name of the cat and that it is climbing
@@ -109,13 +104,13 @@ class Cat(Jumper, Pet):  # You will need to inherit for this to work
 
 
 class HouseCat(Cat):  # You will need to inherit for this to work
-    KIND = 'feline'
+
+    # Change the color to white
     COLOR = 'white'
+    KIND = 'feline'
 
     def __init__(self, name):
         super().__init__(name)
-        # Change the color to white
-        Pet.COLOR = 'white'
 
     def __str__(self):
         # Print the name and description of cat
@@ -123,41 +118,41 @@ class HouseCat(Cat):  # You will need to inherit for this to work
 
     def speak(self):
         # Print cats name and what it says
-        return self.name + ' says meow.'
+        return self.name + ' says Purr.'
 
 
+###########################################
 
+# EXERCISE YOUR CODE
 
-# ###########################################
-#
-#
-# # EXERCISE YOUR CODE
-#
-#
-# #    1. Instantiate each class(except jumper)
+# 1. Instantiate each class(except jumper)
+
 pet = Pet('Taz')
+
 jersey = Dog('Jersey')
+
 benny = BigDog('Benny')
+
 tico = SmallDog('Tico')
+
 tom = Cat('Tom')
+
 walter = HouseCat('Walter')
 
-# #    2. Create a list of the instantiated objects
+
+# 2. Create a list of the instantiated objects
 inst_objects = [pet, jersey, benny, tico, tom, walter]
-#
-# #    3. Loop through the objects
+
+# 3. Loop through the objects
 for item in inst_objects:
 
     # 4. Print __str__
     print(item)
+
     # 5. print the kind of pet
     print(item.KIND)
 
-    # print(item('owner'))
-
-
-
-    #6. Print the Color of the pet
+    # 6. Print the Color of the pet
     print(item.COLOR)
 
     # 7. Have the pet do tricks
@@ -176,11 +171,11 @@ for item in inst_objects:
     else:
         pass
 
-# #    9. If applicable, have the pet climb
+    # 9. If applicable, have the pet climb
     if item.KIND == 'feline':
         print(item.climb())
     else:
         pass
 
-# #   10. To separate each pet print underscores
+    # 10. To separate each pet print underscores
     print('_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _')
