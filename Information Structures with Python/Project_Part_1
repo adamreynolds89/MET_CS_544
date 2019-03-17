@@ -1,0 +1,274 @@
+""" This is part 1 of the project for CS 521 """
+import csv
+
+
+# Abstract record class with one instance (name)
+class AbstractRecord:
+    def __init__(self, name):
+        # the constructor, initialize the record name
+        self.name = name
+name = AbstractRecord(name='')
+
+
+# record class for the baseball data
+class BaseballStatRecord(AbstractRecord):
+    # Initializer method that takes the data to load as an argument
+    def __init__(self, name, salary, g, avg):""" This is part 1 of the project for CS 521 """
+import csv
+
+
+# Abstract record class with one instance (name)
+class AbstractRecord:
+    def __init__(self, name):
+        # the constructor, initialize the record name
+        self.name = name
+name = AbstractRecord(name='')
+
+
+# record class for the baseball data
+class BaseballStatRecord(AbstractRecord):
+    # Initializer method that takes the data to load as an argument
+    def __init__(self, name, salary, g, avg):
+        super().__init__(name)
+        self.name = name
+        self.salary = salary
+        self.g = g
+        self.avg = avg
+
+    # String override for the BaseballStatRecord class
+    def __str__(self):
+        return 'BaseballStatRecord({0}, {1}, {2}, {3})'.format(self.name, self.salary, self.g, self.avg)
+
+
+# record class for the stock data
+class StockStatRecord(AbstractRecord):
+    # Initializer method that takes the data to load as an argument
+    def __init__(self, ticker, company_name='', exchange_country='', price='', exchange_rate='', shares_outstanding='', net_income=0,
+                 market_value_usd=0, pe_ratio=1):
+        super().__init__(name)
+        self.ticker = ticker
+        self.company_name = company_name
+        self.exchange_country = exchange_country
+        self.price = price
+        self.exchange_rate = exchange_rate
+        self.shares_outstanding = shares_outstanding
+        self.net_income = net_income
+        self.market_value_usd = market_value_usd
+        self.pe_ratio = pe_ratio
+
+    # String override for the StockStatRecord class
+    def __str__(self):
+        # return the formatted record for each validated record in the file
+        return 'StockStatRecord({0}, {1}, {2}, $price={3}, {4}, {5}, {6}, $Cap={7}, P/E={8})'.format(
+            self.ticker, self.company_name, self.exchange_country, self.price, self.exchange_rate,
+            self.shares_outstanding, self.net_income, self.market_value_usd, self.pe_ratio)
+
+
+# class to read CSV files
+class AbstractCSVReader:
+    # initializer method that takes the path of the file to be read
+    def __init__(self, file_path):
+        self.file_path = file_path
+
+    # Abstract row_to_record method implemented with NotImplementedError
+    def row_to_record(self, row):
+        NotImplementedError
+
+    # method to open csv file, validate exceptions, and return the list
+    def load(self):
+        list_to_record = []
+        # read each row from the file into a dictionary
+        with open(self.file_path) as open_file:
+            csv_file = csv.DictReader(open_file)
+            for row in csv_file:
+
+                # call the row_to_record method and send the row as a parameter
+                a = self.row_to_record(row)
+
+                # handle the BadData exception raised by row_to_record
+                try:
+                    a
+                except Exception:
+                    raise BadData
+
+                # returns a list once for all records that are loaded
+                list_to_record.append(a)
+
+        if self.file_path == 'MLB2008.csv':
+            BaseballCSVReader(list_to_record)
+        elif self.file_path == 'StockValuations.csv':
+            StocksCSVReader(list_to_record)
+
+
+# baseball CSV reader class that inherits from the AbstractCSVReader class
+class BaseballCSVReader(AbstractCSVReader):
+    def row_to_record(self, line):
+        for item in line:
+            if item == '':
+                raise BadData
+
+        print(BaseballStatRecord(name=line['PLAYER'], salary=line['SALARY'], g=line['G'], avg=line['AVG']))
+
+
+# baseball CSV reader class that inherits from the AbstractCSVReader class
+class StocksCSVReader(AbstractCSVReader):
+
+    # ticker,exchange_country,company_name,price,exchange_rate,shares_outstanding,net_income
+    def row_to_record(self, row):
+        for item in row:
+            if item == '':
+                raise BadData
+            elif row['net_income'] == '0':
+                raise BadData
+
+        """I could not get the calculations to convert to float, so the calculations would not work properly
+        # Because of this issue, I have commented the calculation here and used place holders in the record
+        to show the records are printing correctly"""
+
+        # pe_ratio = float(self.row['price']) * float(self.row['shares_outstanding']) / float(self.row['net_income'])
+        # mv_usd = float((row['price']) * (row['exchange_rate']) * (row['shares_outstanding']))
+
+        print(StockStatRecord(ticker=row['ticker'], company_name=row['company_name'],
+                              exchange_country=row['exchange_country'], price=row['price'],
+                              exchange_rate=row['exchange_rate'], shares_outstanding=row['shares_outstanding'],
+                              net_income=row['net_income'], market_value_usd=5, pe_ratio=1.59))
+
+        """This is the syntax I was using to get the output to show the correct number of decimal points. Becuase I
+        could not get the strings from the csv to convert to floats, these did not work properly."""
+        # market_value_usd=("{0:.2f}".format(mv_usd)),
+        # pe_ratio=("{0:.2f}".format(pe_ratio)))
+
+
+# custom exception to handle record creation errors
+class BadData(Exception):
+    print('Bad data encountered')
+
+
+stocks = StocksCSVReader('StockValuations.csv')
+print(stocks.load())
+# print(StockStatRecord(1))
+
+ball = BaseballCSVReader('MLB2008.csv')
+print(ball.load())
+
+        super().__init__(name)
+        self.name = name
+        self.salary = salary
+        self.g = g
+        self.avg = avg
+
+    # String override for the BaseballStatRecord class
+    def __str__(self):
+        return 'BaseballStatRecord({0}, {1}, {2}, {3})'.format(self.name, self.salary, self.g, self.avg)
+
+
+# record class for the stock data
+class StockStatRecord(AbstractRecord):
+    # Initializer method that takes the data to load as an argument
+    def __init__(self, ticker, company_name='', exchange_country='', price='', exchange_rate='', shares_outstanding='', net_income=0,
+                 market_value_usd=0, pe_ratio=1):
+        super().__init__(name)
+        self.ticker = ticker
+        self.company_name = company_name
+        self.exchange_country = exchange_country
+        self.price = price
+        self.exchange_rate = exchange_rate
+        self.shares_outstanding = shares_outstanding
+        self.net_income = net_income
+        self.market_value_usd = market_value_usd
+        self.pe_ratio = pe_ratio
+
+    # String override for the StockStatRecord class
+    def __str__(self):
+        # return the formatted record for each validated record in the file
+        return 'StockStatRecord({0}, {1}, {2}, $price={3}, {4}, {5}, {6}, $Cap={7}, P/E={8})'.format(
+            self.ticker, self.company_name, self.exchange_country, self.price, self.exchange_rate,
+            self.shares_outstanding, self.net_income, self.market_value_usd, self.pe_ratio)
+
+
+# class to read CSV files
+class AbstractCSVReader:
+    # initializer method that takes the path of the file to be read
+    def __init__(self, file_path):
+        self.file_path = file_path
+
+    # Abstract row_to_record method implemented with NotImplementedError
+    def row_to_record(self, row):
+        NotImplementedError
+
+    # method to open csv file, validate exceptions, and return the list
+    def load(self):
+        list_to_record = []
+        # read each row from the file into a dictionary
+        with open(self.file_path) as open_file:
+            csv_file = csv.DictReader(open_file)
+            for row in csv_file:
+
+                # call the row_to_record method and send the row as a parameter
+                a = self.row_to_record(row)
+
+                # handle the BadData exception raised by row_to_record
+                try:
+                    a
+                except Exception:
+                    raise BadData
+
+                # returns a list once for all records that are loaded
+                list_to_record.append(a)
+
+        if self.file_path == 'MLB2008.csv':
+            BaseballCSVReader(list_to_record)
+        elif self.file_path == 'StockValuations.csv':
+            StocksCSVReader(list_to_record)
+
+
+# baseball CSV reader class that inherits from the AbstractCSVReader class
+class BaseballCSVReader(AbstractCSVReader):
+    def row_to_record(self, line):
+        for item in line:
+            if item == '':
+                raise BadData
+
+        print(BaseballStatRecord(name=line['PLAYER'], salary=line['SALARY'], g=line['G'], avg=line['AVG']))
+
+
+# baseball CSV reader class that inherits from the AbstractCSVReader class
+class StocksCSVReader(AbstractCSVReader):
+
+    # ticker,exchange_country,company_name,price,exchange_rate,shares_outstanding,net_income
+    def row_to_record(self, row):
+        for item in row:
+            if item == '':
+                raise BadData
+            elif row['net_income'] == '0':
+                raise BadData
+
+        """I could not get the calculations to convert to float, so the calculations would not work properly
+        # Because of this issue, I have commented the calculation here and used place holders in the record
+        to show the records are printing correctly"""
+
+        # pe_ratio = float(self.row['price']) * float(self.row['shares_outstanding']) / float(self.row['net_income'])
+        # mv_usd = float((row['price']) * (row['exchange_rate']) * (row['shares_outstanding']))
+
+        print(StockStatRecord(ticker=row['ticker'], company_name=row['company_name'],
+                              exchange_country=row['exchange_country'], price=row['price'],
+                              exchange_rate=row['exchange_rate'], shares_outstanding=row['shares_outstanding'],
+                              net_income=row['net_income'], market_value_usd=5, pe_ratio=1.59))
+
+        """This is the syntax I was using to get the output to show the correct number of decimal points. Becuase I
+        could not get the strings from the csv to convert to floats, these did not work properly."""
+        # market_value_usd=("{0:.2f}".format(mv_usd)),
+        # pe_ratio=("{0:.2f}".format(pe_ratio)))
+
+
+# custom exception to handle record creation errors
+class BadData(Exception):
+    print('Bad data encountered')
+
+
+stocks = StocksCSVReader('StockValuations.csv')
+print(stocks.load())
+# print(StockStatRecord(1))
+
+ball = BaseballCSVReader('MLB2008.csv')
+print(ball.load())
